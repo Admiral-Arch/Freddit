@@ -1,0 +1,17 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.auon</groupId>
+  <artifactId>WebScraper</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.17.2</version>
+      <type>jar</type>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins></plugins>
+  </build>
+</project>
