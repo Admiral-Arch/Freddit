@@ -1,4 +1,0 @@
-INDEX VERSION 1.131+/home/runner/WebScraper-1/.cache/jdt-language-server/data/home/runner/WebScraper-1/.metadata/.plugins/org.eclipse.jdt.core
-63098532.index
-1865797976.index
-3842426239.index
