@@ -8,18 +8,25 @@ import java.io.IOException;
 import java.util.*;
 
 public class Webscraper {
-  public static String getMainText(String url) {
-      try {
-        url = url.replace("&", "%26");
-        Elements bodyElement;
-        Response res = Jsoup
+	public static Map<String, String> getCookies(String url){
+	try {
+        return Jsoup
             .connect(url)
             .referrer("http://www.google.com")
             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36")
             .followRedirects(true)
             .header("Accept-Language", "*")
-            .execute();
-        Map<String, String> cookies = res.cookies();
+            .execute()
+	    .cookies();
+	} catch(IOException e){
+		throw new RuntimeException(e);
+	}
+	}
+  public static String getMainText(String url) {
+      try {
+        url = url.replace("&", "%26");
+        Elements bodyElement;
+        Map<String, String> cookies = getCookies(url);
         //System.out.println("Got the cookies, printing them out");
         //for(Map.Entry<String, String> entry : cookies.entrySet()) {
         //  System.out.println(entry.getKey() + " : " + entry.getValue());
