@@ -3,7 +3,8 @@ A project to free Reddit.
 
 
 Roadmap:
-Anyways things we need to happen in order: find way to grab main text
+
+find way to grab main text(DONE)
 Find way to grab name of Op
 Find way to grab pfp of OP
 Match pfp to name in custom object probably

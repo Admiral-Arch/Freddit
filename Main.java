@@ -10,9 +10,12 @@ import java.util.ArrayList;
 
 class Main {
   public static void main(String[] args) {
-      
+      Scanner sc = new Scanner(System.in);
+      System.out.println("What url do you want to visit?");
+      String url = sc.nextLine();
+      url = url.replaceFirst("www", "old");
+      System.out.println(Webscraper.getMainText(url));
       //System.out.println(Webscraper.getMainText("https://old.reddit.com/r/webdev/comments/evj3ip/clients_who_dont_understand_what_lorem_ipsum_text/"));
-      System.out.println(Webscraper.getMainText("https://old.reddit.com/r/redditdev/comments/11c2pap/example_of_how_to_get_post_info_from_fullname/"));
     // end of main
 }
 }
