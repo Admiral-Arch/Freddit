@@ -7,7 +7,9 @@ import org.jsoup.Connection.Response;
 import java.io.IOException;
 import java.util.*;
 
+
 public class Webscraper {
+	static ArrayList<Post> = new ArrayList();
 	public static String processUrl(String url){
 		url = url.replace("&", "%26");
 		url = url.replaceFirst("www", "old");
@@ -63,10 +65,46 @@ public class Webscraper {
 	  //System.out.println(postTitle.text());
 	  return postTitle.text();
   }
-	  
+  public static void getAllRepliesRecur(String url, int childOf, int depth){
+	url = processUrl(url);
+	Document doc = getDoc(url, getCookies(url));
+	String mainTextXpath = "/html/body/div[3]/div[2]/div[3]/div[";
+	
+		
+
+  }
+  public static void repliesRecurMethod(Document doc, String mainTextXpath, int childOf, int num1, int num2){
+	mainTextXpath += num1 + "]/";
+	String stringoo = mainTextXpath + "div[" + num2 + "]/form/;
+	try{
+		doc.selectXpath(stringoo);
+
+  }
+
   public static Post getMainPost(String url){
 	Post temp = new Post(getMainText(url), getMainPostTitle(url));
 	return temp;
   }
+
   
 }
+//In the form of main text  \n poster name
+//
+///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
+///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/p/a[2]
+//
+///html/body/div[3]/div[2]/div[3]/div[3]/div[2]/form
+//
+///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[2]/form
+//
+///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/div
+//
+//
+//
+//
+//
+///html/body/div[3]/div[2]/div[3]/div[7]/div[2]/form
+//
+///html/body/div[3]/div[2]/div[3]/div[7]/div[3]/div/div[1]/div[2]/form
+//
+///html/body/div[3]/div[2]/div[3]/div[7]/div[3]/div/div[3]/div[2]/form
