@@ -9,7 +9,7 @@ import java.util.*;
 
 
 public class Webscraper {
-	static ArrayList<Post> replies = new ArrayList();
+	static ArrayList<Post> replies = new ArrayList<Post>();
 	public static String processUrl(String url){
 		url = url.replace("&", "%26");
 		url = url.replaceFirst("www", "old");
@@ -65,41 +65,43 @@ public class Webscraper {
 	  //System.out.println(postTitle.text());
 	  return postTitle.text();
   }
-  public static void getAllRepliesRecur(String url, int childOf, int depth){
+  public static void getAllRepliesRecur(String url){
 	url = processUrl(url);
 	Document doc = getDoc(url, getCookies(url));
-	getAllReplies(doc, 0, 1, "/html/body/div[3]/div[2]/div[3]/div[");
+	getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[3]/div[", 1);
   }
   public static void getRepliesDown(Document doc, int childOf, int depth, String xPath, int num){
 ///html/body/div[3]/div[2]/div[3]/div[
 ///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
 		String temp = xPath + num + "]/div[2]/form";
 		num = num + 2;
-		try{
-		doc.selectXpath(temp);
-
-		} catch(IOException e){
+				
+		if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
 			return;
 		}
+		System.out.println(doc.selectXpath(temp).text());
+		System.out.println(temp);
+		Post p1 = new Post(doc.selectXpath(temp).text());
+		replies.add(p1);
 		getRepliesDown(doc, childOf, depth, xPath, num);
 		xPath = xPath + num + "]/div[3]/";
-		getRepliesDeep(doc, childOf, depth + 1, xPath, num);
+		getRepliesDeep(doc, childOf, depth + 1, xPath, 1);
   }
-  public static void getAllReplies(Document doc, int childOf,  int depth, String xPath){
-	  
-	  getRepliesDown(doc, childOf, depth, xPath, 1);
-  }
-  public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num){
-	
-///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/div
+public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num){
+///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/
 	  xPath = xPath + "div/div[";
-	  String temp = xPath + num + "]/div[2]/form
-	  try{
-	  	doc.selectXpath(temp);
-	  }catch(IOException e){
-	  	return;
+	  String temp = xPath + num + "]/div[2]/form/";
+	 try{ 
+	  if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
+		  return;
 	  }
-	  getRepliesDown(doc, childOf, depth, xPath, num);
+	 } catch(Error e){
+		 return;
+	 }
+	  //	Post p1 = new Post(doc.selectXpath(temp).text());
+	//	replies.add(p1);
+	  xPath = xPath + num + "]/";
+	  getRepliesDown(doc, childOf, depth + 1, xPath, num);
 
   }
   public static Post getMainPost(String url){

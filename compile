@@ -1,0 +1,2 @@
+#!/bin/bash
+javac -Xlint -classpath .:target/dependency/* -d . $(find . -type f -name '*.java')
