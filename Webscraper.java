@@ -79,28 +79,35 @@ public class Webscraper {
 		if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
 			return;
 		}
-		System.out.println(doc.selectXpath(temp).text());
+		//System.out.println(doc.selectXpath(temp).text());
 		System.out.println(temp);
 		Post p1 = new Post(doc.selectXpath(temp).text());
 		replies.add(p1);
 		getRepliesDown(doc, childOf, depth, xPath, num);
-		xPath = xPath + num + "]/div[3]/";
+		xPath = xPath + (num - 2) + "]/div[3]/";
 		getRepliesDeep(doc, childOf, depth + 1, xPath, 1);
   }
 public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num){
 ///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/
 	  xPath = xPath + "div/div[";
-	  String temp = xPath + num + "]/div[2]/form/";
+	  String temp = xPath + num + "]/div[2]/form";
 	 try{ 
+	  System.out.println(temp);
+	  System.out.println(doc.selectXpath(temp).text());
 	  if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
+		  System.out.println("Nothing found here?");
 		  return;
 	  }
 	 } catch(Error e){
 		 return;
+	 } catch(IllegalStateException e){
+		 System.out.println("Illegal State Exception");
+		return;
 	 }
 	  //	Post p1 = new Post(doc.selectXpath(temp).text());
 	//	replies.add(p1);
 	  xPath = xPath + num + "]/";
+	  System.out.println("\n We got to the end wirhout returning" + temp);
 	  getRepliesDown(doc, childOf, depth + 1, xPath, num);
 
   }
