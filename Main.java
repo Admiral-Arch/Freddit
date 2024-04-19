@@ -13,8 +13,10 @@ class Main {
       Scanner sc = new Scanner(System.in);
       System.out.println("What url do you want to visit?");
       String url = sc.nextLine();
-      url = url.replaceFirst("www", "old");
-      Post mainPost = new Post(Webscraper.getMainText(url));
+      Post mainPost = Webscraper.getMainPost(url);
+      //System.out.println("The title is: ");
+      System.out.println("\n" + mainPost.getTitle() + "\n");
+
       System.out.println(mainPost.getMainText());
     // end of main
 }

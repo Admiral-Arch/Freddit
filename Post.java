@@ -4,12 +4,15 @@ public class Post{
 	static int count = 1;
 	private int posterId;
 	private int childOfId;
+	private String title;
 
-	public Post(String mainText){
+
+	public Post(String mainText, String title){
 		this.mainText = mainText;
 		id = count;
 		posterId = 0;
 		id = count;
+		this.title = title;
 		childOfId = 0;
 		count++;
 	}
@@ -18,7 +21,10 @@ public class Post{
 		id = count;
 		count++;
 	}
-
+	
+	public String getTitle(){
+		return title;
+	}
 	public String getMainText(){
 		return mainText;
 	}

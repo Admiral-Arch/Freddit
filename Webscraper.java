@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.util.*;
 
 public class Webscraper {
+	public static String processUrl(String url){
+		url = url.replace("&", "%26");
+		url = url.replaceFirst("www", "old");
+		return url;
+	}
 	public static Map<String, String> getCookies(String url){
 	try {
         return Jsoup
@@ -39,7 +44,7 @@ public class Webscraper {
 	}
   public static String getMainText(String url) {
       try {
-        url = url.replace("&", "%26");
+        url = processUrl(url);
         Elements bodyElement;
         Document doc = getDoc(url, getCookies(url));
         bodyElement = doc.selectXpath("/html/body/div[3]/div[1]/div[1]/div[2]/div[2]/form/div/div");
@@ -50,8 +55,18 @@ public class Webscraper {
     System.out.println("Returning null. something went wrong");
     return null;
   }
+  public static String getMainPostTitle(String url){
+	  url = processUrl(url);
+	  Elements postTitle;
+	  Document doc = getDoc(url, getCookies(url));
+	  postTitle = doc.selectXpath("/html/body/div[3]/div[1]/div[1]/div[2]/div[1]/p[1]/a");
+	  //System.out.println(postTitle.text());
+	  return postTitle.text();
+  }
+	  
   public static Post getMainPost(String url){
-	return new Post(getMainText(url));
+	Post temp = new Post(getMainText(url), getMainPostTitle(url));
+	return temp;
   }
   
 }
