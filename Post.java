@@ -21,7 +21,9 @@ public class Post{
 		id = count;
 		count++;
 	}
-	
+	public Post(String mainText){
+		this.mainText = mainText;
+	}
 	public String getTitle(){
 		return title;
 	}

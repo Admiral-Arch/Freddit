@@ -81,18 +81,25 @@ public class Webscraper {
 		} catch(IOException e){
 			return;
 		}
-		getAllRepliesDown(doc, childOf, depth, xPath, num);
-		getRepliesDeep(doc, childOf, depth, xPath, num);
+		getRepliesDown(doc, childOf, depth, xPath, num);
+		xPath = xPath + num + "]/div[3]/";
+		getRepliesDeep(doc, childOf, depth + 1, xPath, num);
   }
   public static void getAllReplies(Document doc, int childOf,  int depth, String xPath){
 	  
-	  getRepliesDown(doc, childOf, depth, xPath);
+	  getRepliesDown(doc, childOf, depth, xPath, 1);
   }
-  public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath){
+  public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num){
 	
-
+///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/div
+	  xPath = xPath + "div/div[";
+	  String temp = xPath + num + "]/div[2]/form
 	  try{
-		  
+	  	doc.selectXpath(temp);
+	  }catch(IOException e){
+	  	return;
+	  }
+	  getRepliesDown(doc, childOf, depth, xPath, num);
 
   }
   public static Post getMainPost(String url){
