@@ -9,7 +9,7 @@ import java.util.*;
 
 
 public class Webscraper {
-	static ArrayList<Post> = new ArrayList();
+	static ArrayList<Post> replies = new ArrayList();
 	public static String processUrl(String url){
 		url = url.replace("&", "%26");
 		url = url.replaceFirst("www", "old");
@@ -68,19 +68,33 @@ public class Webscraper {
   public static void getAllRepliesRecur(String url, int childOf, int depth){
 	url = processUrl(url);
 	Document doc = getDoc(url, getCookies(url));
-	String mainTextXpath = "/html/body/div[3]/div[2]/div[3]/div[";
+	getAllReplies(doc, 0, 1, "/html/body/div[3]/div[2]/div[3]/div[");
+  }
+  public static void getRepliesDown(Document doc, int childOf, int depth, String xPath, int num){
+///html/body/div[3]/div[2]/div[3]/div[
+///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
+		String temp = xPath + num + "]/div[2]/form";
+		num = num + 2;
+		try{
+		doc.selectXpath(temp);
+
+		} catch(IOException e){
+			return;
+		}
+		getAllRepliesDown(doc, childOf, depth, xPath, num);
+		getRepliesDeep(doc, childOf, depth, xPath, num);
+  }
+  public static void getAllReplies(Document doc, int childOf,  int depth, String xPath){
+	  
+	  getRepliesDown(doc, childOf, depth, xPath);
+  }
+  public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath){
 	
-		
+
+	  try{
+		  
 
   }
-  public static void repliesRecurMethod(Document doc, String mainTextXpath, int childOf, int num1, int num2){
-	mainTextXpath += num1 + "]/";
-	String stringoo = mainTextXpath + "div[" + num2 + "]/form/;
-	try{
-		doc.selectXpath(stringoo);
-
-  }
-
   public static Post getMainPost(String url){
 	Post temp = new Post(getMainText(url), getMainPostTitle(url));
 	return temp;
@@ -90,8 +104,8 @@ public class Webscraper {
 }
 //In the form of main text  \n poster name
 //
-///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
 ///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/p/a[2]
+///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
 //
 ///html/body/div[3]/div[2]/div[3]/div[3]/div[2]/form
 //
