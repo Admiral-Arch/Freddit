@@ -10,6 +10,7 @@ import java.util.*;
 
 public class Webscraper {
 	static ArrayList<Post> replies = new ArrayList<Post>();
+	static int counter = 0;
 	public static String processUrl(String url){
 		url = url.replace("&", "%26");
 		url = url.replaceFirst("www", "old");
@@ -77,7 +78,11 @@ public class Webscraper {
 		num = num + 2;
 				
 		if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
-			return;
+			//return;
+			counter++;
+			if(counter >= 10){
+				return;
+			}
 		}
 		//System.out.println(doc.selectXpath(temp).text());
 		System.out.println(temp);
@@ -96,7 +101,9 @@ public static void getRepliesDeep(Document doc, int childOf, int depth, String x
 	  System.out.println(doc.selectXpath(temp).text());
 	  if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
 		  System.out.println("Nothing found here?");
-		  return;
+		  if(counter >= 10){
+		  	return;
+		  }
 	  }
 	 } catch(Error e){
 		 return;
@@ -115,7 +122,11 @@ public static void getRepliesDeep(Document doc, int childOf, int depth, String x
 	Post temp = new Post(getMainText(url), getMainPostTitle(url));
 	return temp;
   }
-
+  public static String testMethod(String url){
+	url = processUrl(url);
+	Document doc = getDoc(url, getCookies(url));
+	return doc.selectXpath("/html/body/div[3]/div[2]/div[3]/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/div/div/p").text();
+  }
   
 }
 //In the form of main text  \n poster name
