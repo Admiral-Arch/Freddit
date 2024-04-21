@@ -105,18 +105,25 @@ public static void getRepliesDeep(Document doc, int childOf, int depth, String x
 ///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/
 ///html/body/div[3]/div[2]/div[7]/div[1]/div[2]/form
 	  xPath = xPath + "div/div[";
-	  String temp = xPath + num + "]/div[2]/form";
+    String temp;
+    if(farComment) {
+      temp = xPath + num + "]/div[1]/div[2]/form";
+      //System.out.println("We are in the second recursive function.");
+      //System.out.println(temp);
+    } else{
+		  temp = xPath + num + "]/div[2]/form";
+    }
 	 try{ 
-	  System.out.println(temp);
-	  System.out.println(doc.selectXpath(temp).text());
+	  //System.out.println(temp);
 	  if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
-		  System.out.println("Nothing found here?");
+		  System.out.println("Nothing found at " + temp);
 		  if(farComment){
         System.out.println(testMethod(temp));
       }
 		  return;
 		  
 	  }
+	  System.out.println(doc.selectXpath(temp).text());
 	 } catch(Error e){
 		 return;
 	 } catch(IllegalStateException e){
