@@ -69,31 +69,41 @@ public class Webscraper {
   public static void getAllRepliesRecur(String url){
 	url = processUrl(url);
 	Document doc = getDoc(url, getCookies(url));
-	getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[3]/div[", 1);
+	getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[3]/div[", 1, false);
+  System.out.println("Starting second recursive method");
+  getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[", 7, true);
   }
-  public static void getRepliesDown(Document doc, int childOf, int depth, String xPath, int num){
+  public static void getRepliesDown(Document doc, int childOf, int depth, String xPath, int num, boolean farComment){
 ///html/body/div[3]/div[2]/div[3]/div[
 ///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
-		String temp = xPath + num + "]/div[2]/form";
+    String temp;
+    if(farComment){
+      temp = xPath + num + "]/div[1]/div[2]/form";
+      //System.out.println("We are in the second recursive function.");
+      //System.out.println(temp);
+    } else{
+		  temp = xPath + num + "]/div[2]/form";
+    }
 		num = num + 2;
 				
-		if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
-			//return;
-			counter++;
-			if(counter >= 10){
-				return;
-			}
+		if(!doc.selectXpath(temp).text().matches("(.*)[^a-z](.*)")){
+      System.out.println("Nothing found at " + temp);
+			return;
+			
+			
+			
 		}
-		//System.out.println(doc.selectXpath(temp).text());
+		System.out.println(doc.selectXpath(temp).text());
 		System.out.println(temp);
 		Post p1 = new Post(doc.selectXpath(temp).text());
 		replies.add(p1);
-		getRepliesDown(doc, childOf, depth, xPath, num);
+		getRepliesDown(doc, childOf, depth, xPath, num, farComment);
 		xPath = xPath + (num - 2) + "]/div[3]/";
-		getRepliesDeep(doc, childOf, depth + 1, xPath, 1);
+		getRepliesDeep(doc, childOf, depth + 1, xPath, 1, farComment);
   }
-public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num){
+public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num, boolean farComment){
 ///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/
+///html/body/div[3]/div[2]/div[7]/div[1]/div[2]/form
 	  xPath = xPath + "div/div[";
 	  String temp = xPath + num + "]/div[2]/form";
 	 try{ 
@@ -101,9 +111,11 @@ public static void getRepliesDeep(Document doc, int childOf, int depth, String x
 	  System.out.println(doc.selectXpath(temp).text());
 	  if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
 		  System.out.println("Nothing found here?");
-		  if(counter >= 10){
-		  	return;
-		  }
+		  if(farComment){
+        System.out.println(testMethod(temp));
+      }
+		  return;
+		  
 	  }
 	 } catch(Error e){
 		 return;
@@ -115,7 +127,7 @@ public static void getRepliesDeep(Document doc, int childOf, int depth, String x
 	//	replies.add(p1);
 	  xPath = xPath + num + "]/";
 	  System.out.println("\n We got to the end wirhout returning" + temp);
-	  getRepliesDown(doc, childOf, depth + 1, xPath, num);
+	  getRepliesDown(doc, childOf, depth + 1, xPath, num, farComment);
 
   }
   public static Post getMainPost(String url){
@@ -125,7 +137,12 @@ public static void getRepliesDeep(Document doc, int childOf, int depth, String x
   public static String testMethod(String url){
 	url = processUrl(url);
 	Document doc = getDoc(url, getCookies(url));
-	return doc.selectXpath("/html/body/div[3]/div[2]/div[3]/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/div/div/p").text();
+  //System.out.println(doc);
+	return doc.selectXpath("/html/body/div[3]/div[2]/div[7]/div[1]/div[2]/form").text();
+  }
+  public static void printDocument(String url){
+    url = processUrl(url);
+    System.out.println(getDoc(url, getCookies(url)));
   }
   
 }
