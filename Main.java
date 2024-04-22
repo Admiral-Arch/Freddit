@@ -23,7 +23,7 @@ class Main {
       System.out.println("\n" + mainPost.getTitle() + "\n");
 
       System.out.println(mainPost.getMainText());
-      System.out.println("\n");
+      System.out.println("\nHere are the replies:\n");
       for(int i = 0; i < Webscraper.replies.size(); i++){
 	      System.out.println(Webscraper.replies.get(i).getMainText());
 	      System.out.println("\n");

@@ -76,7 +76,8 @@ public class Webscraper {
   public static void getRepliesDown(Document doc, int childOf, int depth, String xPath, int num, boolean farComment){
 ///html/body/div[3]/div[2]/div[3]/div[
 ///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
-    String temp;
+    String temp = "NOTHING HAHAHAHA";
+  try{
     if(farComment){
       temp = xPath + num + "]/div[1]/div[2]/form";
       //System.out.println("We are in the second recursive function.");
@@ -86,7 +87,7 @@ public class Webscraper {
     }
 		num = num + 2;
 				
-		if(!doc.selectXpath(temp).text().matches("(.*)[^a-z](.*)")){
+		if(doc.selectXpath(temp).text().equals("")){
       System.out.println("Nothing found at " + temp);
 			return;
 			
@@ -100,14 +101,18 @@ public class Webscraper {
 		getRepliesDown(doc, childOf, depth, xPath, num, farComment);
 		xPath = xPath + (num - 2) + "]/div[3]/";
 		getRepliesDeep(doc, childOf, depth + 1, xPath, 1, farComment);
+  } catch(IllegalStateException E){
+    System.out.println("Error, xpath is messed up here is temp, xpath" + temp + " , " + xPath);
+	return;
+  }
   }
 public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num, boolean farComment){
 ///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/
 ///html/body/div[3]/div[2]/div[7]/div[1]/div[2]/form
 	  xPath = xPath + "div/div[";
-    String temp;
+    String temp = "nothing NYAHHAHHAAHA";
     if(farComment) {
-      temp = xPath + num + "]/div[1]/div[2]/form";
+        temp = xPath +  num + "]/div[1]/div[2]/form";
       //System.out.println("We are in the second recursive function.");
       //System.out.println(temp);
     } else{
@@ -127,13 +132,13 @@ public static void getRepliesDeep(Document doc, int childOf, int depth, String x
 	 } catch(Error e){
 		 return;
 	 } catch(IllegalStateException e){
-		 System.out.println("Illegal State Exception");
+		 System.out.println("Illegal State Exception: " + temp + " , " + xPath);
 		return;
 	 }
 	  //	Post p1 = new Post(doc.selectXpath(temp).text());
 	//	replies.add(p1);
 	  xPath = xPath + num + "]/";
-	  System.out.println("\n We got to the end wirhout returning" + temp);
+	  //System.out.println("\n We got to the end without returning" + temp);
 	  getRepliesDown(doc, childOf, depth + 1, xPath, num, farComment);
 
   }
