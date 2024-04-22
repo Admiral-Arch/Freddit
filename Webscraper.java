@@ -99,10 +99,13 @@ public class Webscraper {
 		Post p1 = new Post(doc.selectXpath(temp).text());
 		replies.add(p1);
 		getRepliesDown(doc, childOf, depth, xPath, num, farComment);
+    //if(farComment){
+
+    //}
 		xPath = xPath + (num - 2) + "]/div[3]/";
 		getRepliesDeep(doc, childOf, depth + 1, xPath, 1, farComment);
   } catch(IllegalStateException E){
-    System.out.println("Error, xpath is messed up here is temp, xpath" + temp + " , " + xPath);
+    System.out.println("Error, xpath is messed up here is temp, xpath " + temp + " , " + xPath);
 	return;
   }
   }
