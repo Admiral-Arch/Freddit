@@ -69,63 +69,61 @@ public class Webscraper {
   public static void getAllRepliesRecur(String url){
 	url = processUrl(url);
 	Document doc = getDoc(url, getCookies(url));
-	getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[3]/div[", 1, false);
+	getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[3]/div[", 1);
   System.out.println("Starting second recursive method");
-  getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[", 7, true);
+  getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[7]/div[", 1);
   }
-  public static void getRepliesDown(Document doc, int childOf, int depth, String xPath, int num, boolean farComment){
+  public static void getRepliesDown(Document doc, int childOf, int depth, String xPath, int num){
 ///html/body/div[3]/div[2]/div[3]/div[
 ///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
+///html/body/div[3]/div[2]/div[7]/div[3]/div[3]/div/div[1]/div[2]/form
     String temp = "NOTHING HAHAHAHA";
   try{
-    if(farComment){
-      temp = xPath + "7]/div[" + num + "]/div[2]/form";
       //System.out.println("We are in the second recursive function.");
-      //System.out.println(temp);
-    } else{
-		  temp = xPath + num + "]/div[2]/form";
-    }
+      //System.out.println("In getRepliesDown farComment here is temp " + temp);
+	  temp = xPath + num + "]/div[2]/form";
 		num = num + 2;
 				
 		if(doc.selectXpath(temp).text().equals("")){
       //System.out.println("Nothing found at " + temp);
-			return;
+      return;
 			
 			
 			
 		}
 		//System.out.println(doc.selectXpath(temp).text());
-		System.out.println(temp);
-		Post p1 = new Post(doc.selectXpath(temp).text());
+		//System.out.println(temp);
+		Post p1 = new Post(doc.selectXpath(temp).text(), childOf, depth);
+    int id = p1.getId();
 		replies.add(p1);
-		getRepliesDown(doc, childOf, depth, xPath, num, farComment);
+		getRepliesDown(doc, childOf, depth, xPath, num);
     //if(farComment){
 
     //}
 		xPath = xPath + (num - 2) + "]/div[3]/";
-		getRepliesDeep(doc, childOf, depth + 1, xPath, 1, farComment);
+		getRepliesDeep(doc, id, depth + 1, xPath, 1);
   } catch(IllegalStateException E){
     System.out.println("Error, xpath is messed up here is temp, xpath " + temp + " , " + xPath);
 	return;
   }
   }
-public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num, boolean farComment){
+public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num){
 ///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/
 ///html/body/div[3]/div[2]/div[7]/div[1]/div[2]/form
 	  xPath = xPath + "div/div[";
     //System.out.println("test1");
     String temp = "nothing NYAHHAHHAAHA";
-    if(farComment) {
-        temp = xPath +  num + "]/div[1]/div[2]/form";
+    //if(farComment) {
+      //  temp = xPath +  num + "]/div[1]/div[2]/form";
         //System.out.println("Test 2");
       //System.out.println("We are in the second recursive function.");
       //System.out.println(temp + " is the temp in farComment");
       //System.out.println(xPath + " is the xPath");
-    } else{
+    //} else{
 
 		  temp = xPath + num + "]/div[2]/form";
       //System.out.println("Test 3 : " + xPath);
-    }
+    //}
 	 try{ 
 	  //System.out.println(temp);
     /*
@@ -154,7 +152,7 @@ public static void getRepliesDeep(Document doc, int childOf, int depth, String x
     //System.out.println("Test 4 : " + xPath);
 	  //System.out.println("\n We got to the end without returning" + temp);
     //
-	  getRepliesDown(doc, childOf, depth + 1, xPath, num, farComment);
+	  getRepliesDown(doc, childOf, depth + 1, xPath, num);
 
   }
   public static Post getMainPost(String url){
