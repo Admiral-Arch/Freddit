@@ -24,7 +24,9 @@ class Main {
 
       System.out.println(mainPost.getMainText());
       System.out.println("\nHere are the replies:\n");
+      Webscraper.sortReplies();
       for(int i = 0; i < Webscraper.replies.size(); i++){
+        System.out.println("Reply id: " + Webscraper.replies.get(i).getId() + " Reply to: " + Webscraper.replies.get(i).getParent());
 	      System.out.println(Webscraper.replies.get(i).getMainText());
 	      System.out.println("\n");
       }

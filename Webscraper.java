@@ -11,6 +11,19 @@ import java.util.*;
 public class Webscraper {
 	static ArrayList<Post> replies = new ArrayList<Post>();
 	static int counter = 0;
+  public static void sortReplies(){
+    for(int i = 0; i < replies.size(); i++){
+      if(!(replies.get(i).getParent() == 0)){
+        int replyTo = replies.get(i).getParent();
+        int index;
+        for(int j = 0; j < replies.size(); j++){
+          if(replies.get(j).getId() == replyTo){
+            replies.add(j + 1, replies.remove(i));
+          }
+        }
+      }
+    }
+  }
 	public static String processUrl(String url){
 		url = url.replace("&", "%26");
 		url = url.replaceFirst("www", "old");
@@ -70,7 +83,7 @@ public class Webscraper {
 	url = processUrl(url);
 	Document doc = getDoc(url, getCookies(url));
 	getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[3]/div[", 1);
-  System.out.println("Starting second recursive method");
+  //System.out.println("Starting second recursive method");
   getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[7]/div[", 1);
   }
   public static void getRepliesDown(Document doc, int childOf, int depth, String xPath, int num){

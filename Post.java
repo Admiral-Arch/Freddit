@@ -26,6 +26,8 @@ public class Post{
     this.mainText = mainText;
     this.childOfId = childOfId;
     this.depth = depth;
+    this.id = count;
+    count++;
   }
 	public Post(String mainText){
 		this.mainText = mainText;
