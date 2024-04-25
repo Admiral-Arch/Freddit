@@ -15,3 +15,6 @@ A project to free Reddit.
 9. Make search functionality work (somehow)
 10. Figure out how to host this using HTTP
 11. Make Reddit links redirect to the host
+
+## Footnotes
+* only grabs around 500, and as low as 14 in very extreme cases with thousands of replies. Also takes too long to grab and sort around 500 replies.
