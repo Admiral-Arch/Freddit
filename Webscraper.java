@@ -7,7 +7,10 @@ import org.jsoup.Connection.Response;
 import java.io.IOException;
 import java.util.*;
 
+
 public class Webscraper {
+	static ArrayList<Post> replies = new ArrayList<Post>();
+	static int counter = 0;
 	public static String processUrl(String url){
 		url = url.replace("&", "%26");
 		url = url.replaceFirst("www", "old");
@@ -63,10 +66,130 @@ public class Webscraper {
 	  //System.out.println(postTitle.text());
 	  return postTitle.text();
   }
-	  
+  public static void getAllRepliesRecur(String url){
+	url = processUrl(url);
+	Document doc = getDoc(url, getCookies(url));
+	getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[3]/div[", 1, false);
+  System.out.println("Starting second recursive method");
+  getRepliesDown(doc, 0, 1, "/html/body/div[3]/div[2]/div[", 7, true);
+  }
+  public static void getRepliesDown(Document doc, int childOf, int depth, String xPath, int num, boolean farComment){
+///html/body/div[3]/div[2]/div[3]/div[
+///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
+    String temp = "NOTHING HAHAHAHA";
+  try{
+    if(farComment){
+      temp = xPath + "7]/div[" + num + "]/div[2]/form";
+      //System.out.println("We are in the second recursive function.");
+      //System.out.println(temp);
+    } else{
+		  temp = xPath + num + "]/div[2]/form";
+    }
+		num = num + 2;
+				
+		if(doc.selectXpath(temp).text().equals("")){
+      //System.out.println("Nothing found at " + temp);
+			return;
+			
+			
+			
+		}
+		//System.out.println(doc.selectXpath(temp).text());
+		System.out.println(temp);
+		Post p1 = new Post(doc.selectXpath(temp).text());
+		replies.add(p1);
+		getRepliesDown(doc, childOf, depth, xPath, num, farComment);
+    //if(farComment){
+
+    //}
+		xPath = xPath + (num - 2) + "]/div[3]/";
+		getRepliesDeep(doc, childOf, depth + 1, xPath, 1, farComment);
+  } catch(IllegalStateException E){
+    System.out.println("Error, xpath is messed up here is temp, xpath " + temp + " , " + xPath);
+	return;
+  }
+  }
+public static void getRepliesDeep(Document doc, int childOf, int depth, String xPath, int num, boolean farComment){
+///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/
+///html/body/div[3]/div[2]/div[7]/div[1]/div[2]/form
+	  xPath = xPath + "div/div[";
+    //System.out.println("test1");
+    String temp = "nothing NYAHHAHHAAHA";
+    if(farComment) {
+        temp = xPath +  num + "]/div[1]/div[2]/form";
+        //System.out.println("Test 2");
+      //System.out.println("We are in the second recursive function.");
+      //System.out.println(temp + " is the temp in farComment");
+      //System.out.println(xPath + " is the xPath");
+    } else{
+
+		  temp = xPath + num + "]/div[2]/form";
+      //System.out.println("Test 3 : " + xPath);
+    }
+	 try{ 
+	  //System.out.println(temp);
+    /*
+	  if(!doc.selectXpath(temp).text().matches(".*[^a-z].*")){
+		  System.out.println("Nothing found at " + temp);
+		  if(farComment){
+        System.out.println(testMethod(temp));
+      }
+		  return;
+		  
+	  }
+    */
+
+		Post p1 = new Post(doc.selectXpath(temp).text());
+    //replies.add(p1);
+	  //System.out.println(doc.selectXpath(temp).text());
+	 } catch(Error e){
+		 return;
+	 } catch(IllegalStateException e){
+		 System.out.println("Illegal State Exception: " + temp + " , " + xPath);
+		return;
+	 }
+	  //	Post p1 = new Post(doc.selectXpath(temp).text());
+	//	replies.add(p1);
+	  //xPath = xPath + num + "]/";
+    //System.out.println("Test 4 : " + xPath);
+	  //System.out.println("\n We got to the end without returning" + temp);
+    //
+	  getRepliesDown(doc, childOf, depth + 1, xPath, num, farComment);
+
+  }
   public static Post getMainPost(String url){
 	Post temp = new Post(getMainText(url), getMainPostTitle(url));
 	return temp;
   }
+  public static String testMethod(String url){
+	url = processUrl(url);
+	Document doc = getDoc(url, getCookies(url));
+  //System.out.println(doc);
+	return doc.selectXpath("/html/body/div[3]/div[2]/div[7]/div[1]/div[2]/form").text();
+  }
+  public static void printDocument(String url){
+    url = processUrl(url);
+    System.out.println(getDoc(url, getCookies(url)));
+  }
   
 }
+//In the form of main text  \n poster name
+//
+///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/p/a[2]
+///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
+//
+///html/body/div[3]/div[2]/div[3]/div[3]/div[2]/form
+//
+///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[2]/form
+//
+///html/body/div[3]/div[2]/div[3]/div[3]/div[3]/div/div[1]/div[3]/div/div[1]/div[2]/form/div
+//
+//
+//
+//
+//
+///html/body/div[3]/div[2]/div[3]/div[7]/div[2]/form
+//
+///html/body/div[3]/div[2]/div[3]/div[7]/div[3]/div/div[1]/div[2]/form
+//
+///html/body/div[3]/div[2]/div[3]/div[7]/div[3]/div/div[3]/div[2]/form
