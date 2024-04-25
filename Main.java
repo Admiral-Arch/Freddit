@@ -13,9 +13,9 @@ class Main {
       Scanner sc = new Scanner(System.in);
       System.out.println("What url do you want to visit?");
       String url = sc.nextLine();
-      System.out.println("testing...");
-	    System.out.println(Webscraper.testMethod(url));
-      System.out.println("Test end...");
+      //System.out.println("testing...");
+	    //System.out.println(Webscraper.testMethod(url));
+      //System.out.println("Test end...");
       Webscraper.getAllRepliesRecur(url);
 
       Post mainPost = Webscraper.getMainPost(url);
