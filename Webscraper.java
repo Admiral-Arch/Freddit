@@ -27,6 +27,7 @@ public class Webscraper {
 	public static String processUrl(String url){
 		url = url.replace("&", "%26");
 		url = url.replaceFirst("www", "old");
+    url = url + "?limit=500";
 		return url;
 	}
 	public static Map<String, String> getCookies(String url){
@@ -52,7 +53,9 @@ public class Webscraper {
             		.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36")
             		.followRedirects(true)
             		.header("Accept-Language", "*")
-            		.cookies(cookies);
+            		.cookies(cookies)
+                .maxBodySize(0)
+                .timeout(15 * 1000);
 		return connection.get();
 	} catch(IOException e) {
 		throw new RuntimeException(e);
