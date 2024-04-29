@@ -6,7 +6,7 @@ public class Post{
 	private int childOfId;
 	private String title;
   private int depth;
-
+  private String posterName;
 
 	public Post(String mainText, String title){
 		this.mainText = mainText;
@@ -22,16 +22,20 @@ public class Post{
 		id = count;
 		count++;
 	}
-  public Post(String mainText, int childOfId, int depth){
+  public Post(String mainText, int childOfId, int depth, String posterName){
     this.mainText = mainText;
     this.childOfId = childOfId;
     this.depth = depth;
     this.id = count;
+    this.posterName = posterName;
     count++;
   }
 	public Post(String mainText){
 		this.mainText = mainText;
 	}
+  public String getName(){
+    return posterName;
+  }
 	public String getTitle(){
 		return title;
 	}

@@ -94,12 +94,13 @@ public class Webscraper {
 ///html/body/div[3]/div[2]/div[3]/div[1]/div[2]/form
 ///html/body/div[3]/div[2]/div[7]/div[3]/div[3]/div/div[1]/div[2]/form
     String temp = "NOTHING HAHAHAHA";
+    String temp2;
   try{
       //System.out.println("We are in the second recursive function.");
       //System.out.println("In getRepliesDown farComment here is temp " + temp);
 	  temp = xPath + num + "]/div[2]/form";
+		temp2 = xPath + num + "]/div[2]/p/a[2]";
 		num = num + 2;
-				
 		if(doc.selectXpath(temp).text().equals("")){
       //System.out.println("Nothing found at " + temp);
       return;
@@ -109,7 +110,7 @@ public class Webscraper {
 		}
 		//System.out.println(doc.selectXpath(temp).text());
 		//System.out.println(temp);
-		Post p1 = new Post(doc.selectXpath(temp).text(), childOf, depth);
+		Post p1 = new Post(doc.selectXpath(temp).text(), childOf, depth, doc.selectXpath(temp2).text());
     int id = p1.getId();
 		replies.add(p1);
 		getRepliesDown(doc, childOf, depth, xPath, num);
