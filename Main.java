@@ -25,14 +25,16 @@ class Main {
       System.out.println(mainPost.getMainText());
       System.out.println("\nHere are the replies:\n");
       Webscraper.sortReplies();
-      for(int i = 0; i < Webscraper.replies.size(); i++){
-        System.out.println(Webscraper.replies.get(i));
-	      System.out.println("\n");
-      }
-      
+      printReplies(Webscraper.replies);
       
     // end of main
-}
+  }
+  public static void printReplies(ArrayList<Post> arr){
+    for(int i = 0; i < arr.size(); i++){
+      System.out.println(arr.get(i));
+      System.out.println("\n");
+    }
+  }
 }
 
 //System.out.println(Webscraper.getMainText("https://old.reddit.com/r/webdev/comments/evj3ip/clients_who_dont_understand_what_lorem_ipsum_text/"));
