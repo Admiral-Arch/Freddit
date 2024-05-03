@@ -27,12 +27,18 @@ public class Post{
     this.childOfId = childOfId;
     this.depth = depth;
     this.id = count;
+    if(posterName.equals("(0 children)")){
+      posterName = "[deleted]";
+    }
     this.posterName = posterName;
     count++;
   }
 	public Post(String mainText){
 		this.mainText = mainText;
 	}
+  public String toString(){
+    return "Poster name " + posterName + "\nReply id: " + id + " Reply to: " + childOfId + "\n" + mainText; 
+  }
   public String getName(){
     return posterName;
   }
